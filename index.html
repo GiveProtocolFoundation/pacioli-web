@@ -1,0 +1,723 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pacioli — Professional accounting for crypto and fiat, local-first</title>
+<meta name="description" content="Pacioli is an open-source, double-entry accounting platform for crypto and traditional fiat — across Bitcoin, Ethereum and ERC-20 chains, Solana, XRP, Stellar, Polkadot, and Cosmos. Download the desktop app or self-host the web build. Your ledger stays on your machine." />
+<meta property="og:title" content="Pacioli — Professional accounting for crypto and fiat" />
+<meta property="og:description" content="Open-source, local-first double-entry accounting across every major chain and your fiat accounts." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://pacioli.io" />
+<meta name="theme-color" content="#17110F" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --ink:        #17110F;
+    --ink-2:      #1E1613;
+    --ink-3:      #251B17;
+    --burgundy:   #6B2D3E;
+    --burgundy-deep: #4A1E2A;
+    --burgundy-bright: #9A4257;
+    --gold:       #C9A84C;
+    --gold-bright:#E3C66C;
+    --gold-dim:   #9A8038;
+    --parchment:  #F2E9DA;
+    --parchment-dim: #CBBDA9;
+    --muted:      #8C7E6E;
+    --rule:       #3A2E27;
+    --rule-soft:  #2C211C;
+
+    --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --sans:  'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+    --mono:  'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+    --maxw: 1120px;
+    --gutter: clamp(20px, 5vw, 56px);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  body {
+    margin: 0;
+    background: var(--ink);
+    color: var(--parchment);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  a { color: var(--gold-bright); text-decoration: none; }
+  a:hover { color: var(--gold); }
+
+  ::selection { background: var(--burgundy); color: var(--parchment); }
+
+  :focus-visible {
+    outline: 2px solid var(--gold-bright);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+
+  .wrap { width: 100%; max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter); }
+
+  /* Signature: the double-entry rule — two hairlines used to divide sections */
+  .double-rule {
+    border: 0;
+    height: 0;
+    border-top: 1px solid var(--rule);
+    box-shadow: 0 3px 0 -2px var(--gold-dim);
+    margin: 0;
+  }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 0 0 18px;
+  }
+
+  h1, h2, h3 { font-family: var(--serif); font-weight: 500; letter-spacing: -0.01em; line-height: 1.08; }
+
+  /* ---------- Header ---------- */
+  header.site {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(23,17,15,0.82);
+    backdrop-filter: saturate(140%) blur(10px);
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .nav { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+  .brand { display: inline-flex; align-items: center; gap: 12px; color: var(--parchment); }
+  .brand:hover { color: var(--parchment); }
+  .brand .mark { width: 30px; height: 30px; color: var(--gold); flex: none; }
+  .brand .word { font-family: var(--serif); font-size: 24px; font-weight: 600; letter-spacing: -0.01em; }
+  .nav-links { display: flex; align-items: center; gap: 30px; }
+  .nav-links a { color: var(--parchment-dim); font-size: 15px; }
+  .nav-links a:hover { color: var(--parchment); }
+  .nav-cta {
+    font-family: var(--sans); font-size: 14px; font-weight: 600;
+    color: var(--ink); background: var(--gold);
+    padding: 9px 16px; border-radius: 5px;
+  }
+  .nav-cta:hover { background: var(--gold-bright); color: var(--ink); }
+  .nav-toggle { display: none; }
+  @media (max-width: 820px) {
+    .nav-links { display: none; }
+  }
+
+  /* ---------- Hero ---------- */
+  .hero { padding: clamp(56px, 9vw, 110px) 0 clamp(40px, 6vw, 72px); }
+  .hero-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: clamp(32px, 5vw, 64px); align-items: center; }
+  @media (max-width: 920px) { .hero-grid { grid-template-columns: 1fr; } }
+
+  .hero h1 { font-size: clamp(40px, 6.4vw, 68px); margin: 0 0 22px; }
+  .hero h1 .accent { color: var(--gold); font-style: italic; }
+  .lede { font-size: clamp(17px, 2vw, 20px); color: var(--parchment-dim); max-width: 30ch; margin: 0 0 32px; }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--sans); font-size: 15px; font-weight: 600;
+    padding: 13px 22px; border-radius: 6px; cursor: pointer;
+    border: 1px solid transparent; transition: background .18s ease, border-color .18s ease, transform .18s ease;
+  }
+  .btn svg { width: 18px; height: 18px; }
+  .btn-primary { background: var(--gold); color: var(--ink); }
+  .btn-primary:hover { background: var(--gold-bright); color: var(--ink); transform: translateY(-1px); }
+  .btn-ghost { background: transparent; color: var(--parchment); border-color: var(--rule); }
+  .btn-ghost:hover { border-color: var(--gold-dim); color: var(--parchment); }
+  .meta-line { font-family: var(--mono); font-size: 12.5px; color: var(--muted); margin-top: 20px; letter-spacing: 0.02em; }
+  .meta-line a { color: var(--parchment-dim); border-bottom: 1px solid var(--rule); }
+  .meta-line a:hover { color: var(--gold); border-color: var(--gold-dim); }
+
+  /* Hero ledger card — the double-entry proof */
+  .ledger {
+    background: linear-gradient(180deg, var(--ink-3), var(--ink-2));
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 22px 24px 20px;
+    box-shadow: 0 24px 60px -30px rgba(0,0,0,0.8);
+  }
+  .ledger-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 14px; }
+  .ledger-head .t { font-family: var(--serif); font-size: 17px; color: var(--parchment); }
+  .ledger-head .d { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  table.je { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 13px; }
+  table.je th {
+    text-align: right; font-weight: 500; color: var(--gold); font-size: 10.5px;
+    letter-spacing: 0.12em; text-transform: uppercase; padding: 0 0 8px; border-bottom: 1px solid var(--rule);
+  }
+  table.je th:first-child { text-align: left; }
+  table.je td { padding: 9px 0; color: var(--parchment-dim); text-align: right; }
+  table.je td:first-child { text-align: left; color: var(--parchment); }
+  table.je td.indent { padding-left: 18px; color: var(--parchment-dim); }
+  table.je tr.total td {
+    border-top: 1px solid var(--rule);
+    box-shadow: inset 0 -3px 0 -2px var(--gold-dim);
+    color: var(--parchment); padding-bottom: 12px;
+  }
+  .balance-note { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 12px; text-align: right; }
+  .balance-note .ok { color: var(--gold); }
+
+  /* ---------- Section scaffold ---------- */
+  section.block { padding: clamp(56px, 8vw, 96px) 0; }
+  .sec-head { max-width: 60ch; margin-bottom: clamp(32px, 5vw, 52px); }
+  .sec-head h2 { font-size: clamp(28px, 4vw, 42px); margin: 0 0 14px; }
+  .sec-head p { color: var(--parchment-dim); margin: 0; font-size: 18px; }
+
+  /* ---------- Features ---------- */
+  .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule-soft); border: 1px solid var(--rule-soft); border-radius: 10px; overflow: hidden; }
+  @media (max-width: 820px) { .feature-grid { grid-template-columns: 1fr; } }
+  .feature { background: var(--ink); padding: 30px 26px; }
+  .feature .ic { width: 26px; height: 26px; color: var(--gold); margin-bottom: 16px; }
+  .feature h3 { font-size: 21px; margin: 0 0 9px; color: var(--parchment); }
+  .feature p { margin: 0; color: var(--parchment-dim); font-size: 15.5px; line-height: 1.55; }
+
+  /* ---------- Download ---------- */
+  .dl-note {
+    background: var(--ink-2); border: 1px solid var(--rule);
+    border-left: 3px solid var(--gold); border-radius: 8px;
+    padding: 16px 20px; margin-bottom: 30px; font-size: 15px; color: var(--parchment-dim);
+  }
+  .dl-note strong { color: var(--parchment); font-weight: 600; }
+  .dl-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 820px) { .dl-grid { grid-template-columns: 1fr; } }
+  .dl-card {
+    background: var(--ink-2); border: 1px solid var(--rule); border-radius: 10px;
+    padding: 26px 24px; display: flex; flex-direction: column; gap: 4px; transition: border-color .18s ease, transform .18s ease;
+  }
+  .dl-card:hover { border-color: var(--gold-dim); transform: translateY(-2px); }
+  .dl-card .os-ic { width: 30px; height: 30px; color: var(--parchment); margin-bottom: 12px; }
+  .dl-card h3 { font-size: 22px; margin: 0; color: var(--parchment); }
+  .dl-card .sub { font-family: var(--mono); font-size: 11.5px; color: var(--muted); margin: 4px 0 16px; min-height: 16px; letter-spacing: 0.02em; }
+  .dl-assets { display: flex; flex-direction: column; gap: 9px; margin-top: auto; }
+  .dl-link {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    font-family: var(--mono); font-size: 13px; color: var(--parchment);
+    background: var(--ink-3); border: 1px solid var(--rule); border-radius: 6px; padding: 10px 13px;
+  }
+  .dl-link:hover { border-color: var(--gold-dim); color: var(--gold-bright); }
+  .dl-link .arr { color: var(--gold); }
+  .dl-soft { font-size: 13.5px; color: var(--muted); }
+  .dl-soft a { border-bottom: 1px solid var(--rule); }
+  .releases-line { margin-top: 26px; font-family: var(--mono); font-size: 13px; color: var(--muted); }
+
+  /* ---------- Self-host ---------- */
+  .host-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 4vw, 48px); align-items: start; }
+  @media (max-width: 920px) { .host-grid { grid-template-columns: 1fr; } }
+  .steps { counter-reset: step; display: flex; flex-direction: column; gap: 22px; }
+  .step { display: grid; grid-template-columns: 34px 1fr; gap: 16px; align-items: start; }
+  .step .n {
+    counter-increment: step; width: 34px; height: 34px; flex: none;
+    display: grid; place-items: center; border-radius: 50%;
+    border: 1px solid var(--gold-dim); color: var(--gold); font-family: var(--mono); font-size: 14px;
+  }
+  .step .n::before { content: counter(step); }
+  .step h3 { font-size: 19px; margin: 4px 0 6px; color: var(--parchment); }
+  .step p { margin: 0 0 12px; color: var(--parchment-dim); font-size: 15px; }
+
+  pre.cmd {
+    position: relative; background: #120D0B; border: 1px solid var(--rule);
+    border-radius: 8px; padding: 14px 44px 14px 16px; margin: 0;
+    font-family: var(--mono); font-size: 13px; line-height: 1.7; color: var(--parchment);
+    overflow-x: auto; white-space: pre;
+  }
+  pre.cmd .c { color: var(--muted); }
+  pre.cmd .tok { color: var(--gold-bright); }
+  .copy {
+    position: absolute; top: 8px; right: 8px; width: 28px; height: 28px;
+    display: grid; place-items: center; cursor: pointer;
+    background: transparent; border: 1px solid var(--rule); border-radius: 5px; color: var(--muted);
+  }
+  .copy:hover { color: var(--gold); border-color: var(--gold-dim); }
+  .copy svg { width: 14px; height: 14px; }
+
+  .host-aside {
+    background: var(--ink-2); border: 1px solid var(--rule); border-radius: 10px; padding: 26px 24px;
+  }
+  .host-aside h3 { font-size: 19px; margin: 0 0 14px; color: var(--parchment); }
+  .deploy-targets { display: flex; flex-direction: column; gap: 0; }
+  .deploy-targets li { list-style: none; }
+  .deploy-targets { padding: 0; margin: 0 0 20px; }
+  .dt { display: flex; gap: 12px; padding: 13px 0; border-top: 1px solid var(--rule-soft); }
+  .dt:first-child { border-top: 0; }
+  .dt .lbl { font-weight: 600; color: var(--parchment); font-size: 15px; min-width: 130px; }
+  .dt .desc { color: var(--parchment-dim); font-size: 14px; }
+  .caveat {
+    font-size: 14px; color: var(--parchment-dim);
+    background: var(--ink-3); border: 1px solid var(--rule); border-left: 3px solid var(--burgundy-bright);
+    border-radius: 7px; padding: 14px 16px;
+  }
+  .caveat strong { color: var(--parchment); }
+
+  /* ---------- Managed cloud ---------- */
+  .cloud-card {
+    background:
+      radial-gradient(120% 140% at 100% 0%, rgba(107,45,62,0.35), transparent 60%),
+      var(--ink-2);
+    border: 1px solid var(--rule); border-radius: 14px;
+    padding: clamp(30px, 5vw, 52px); display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px; align-items: center;
+  }
+  @media (max-width: 820px) { .cloud-card { grid-template-columns: 1fr; } }
+  .cloud-tag {
+    display: inline-block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--gold); border: 1px solid var(--gold-dim); border-radius: 100px; padding: 5px 12px; margin-bottom: 18px;
+  }
+  .cloud-card h2 { font-size: clamp(26px, 3.6vw, 38px); margin: 0 0 14px; }
+  .cloud-card .lede2 { color: var(--parchment-dim); margin: 0 0 22px; font-size: 16.5px; }
+  .cloud-feats { display: grid; gap: 10px; padding: 0; margin: 0 0 4px; }
+  .cloud-feats li { list-style: none; display: flex; gap: 10px; align-items: flex-start; color: var(--parchment-dim); font-size: 15px; }
+  .cloud-feats .tick { color: var(--gold); flex: none; margin-top: 3px; }
+  .waitlist { display: flex; gap: 10px; flex-wrap: wrap; }
+  .waitlist input {
+    flex: 1 1 220px; min-width: 0; background: var(--ink); border: 1px solid var(--rule); border-radius: 6px;
+    color: var(--parchment); font-family: var(--sans); font-size: 15px; padding: 12px 14px;
+  }
+  .waitlist input::placeholder { color: var(--muted); }
+  .waitlist input:focus { border-color: var(--gold-dim); outline: none; }
+  .waitlist-note { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-top: 12px; }
+
+  /* ---------- Footer ---------- */
+  footer.site { padding: clamp(48px, 6vw, 72px) 0 40px; border-top: 1px solid var(--rule-soft); }
+  .foot-grid { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 36px; }
+  @media (max-width: 820px) { .foot-grid { grid-template-columns: 1fr 1fr; gap: 30px; } }
+  .foot-brand .word { font-family: var(--serif); font-size: 22px; font-weight: 600; color: var(--parchment); }
+  .foot-brand p { color: var(--muted); font-size: 14px; max-width: 34ch; margin: 12px 0 0; }
+  .foot-col h4 { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin: 0 0 14px; }
+  .foot-col a { display: block; color: var(--parchment-dim); font-size: 14.5px; margin-bottom: 10px; }
+  .foot-col a:hover { color: var(--gold); }
+  .foot-bottom { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; align-items: center; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--rule-soft); }
+  .foot-bottom p { margin: 0; color: var(--muted); font-size: 13px; }
+  .foot-bottom .heritage { font-style: italic; font-family: var(--serif); color: var(--parchment-dim); }
+
+  /* ---------- Scroll reveal ---------- */
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="Pacioli home">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="3.5" y="4.5" width="25" height="23" rx="3" stroke="currentColor" stroke-width="1.6"/>
+        <line x1="16" y1="6" x2="16" y2="26" stroke="currentColor" stroke-width="1.4"/>
+        <line x1="6" y1="12" x2="13" y2="12" stroke="currentColor" stroke-width="1.4"/>
+        <line x1="6" y1="16" x2="13" y2="16" stroke="currentColor" stroke-width="1.4"/>
+        <line x1="19" y1="12" x2="26" y2="12" stroke="currentColor" stroke-width="1.4"/>
+        <line x1="19" y1="16" x2="26" y2="16" stroke="currentColor" stroke-width="1.4"/>
+      </svg>
+      <span class="word">Pacioli</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#features">Features</a>
+      <a href="#download">Download</a>
+      <a href="#self-host">Self-host</a>
+      <a href="https://docs.pacioli.io">Docs</a>
+      <a href="https://github.com/GiveProtocolFoundation/Pacioli">GitHub</a>
+    </nav>
+    <a class="nav-cta" href="#download">Get Pacioli</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="reveal">
+        <p class="eyebrow">Open-source · Local-first · AGPL-3.0</p>
+        <h1>Five centuries of accounting,<br><span class="accent">for crypto and fiat.</span></h1>
+        <p class="lede">Pacioli is a professional, double-entry accounting platform spanning Bitcoin, Ethereum and every ERC-20 chain, Solana, XRP, Stellar, Polkadot and Cosmos — alongside your traditional fiat accounts. Your ledger lives on your machine, not someone else's cloud.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#download" id="heroDownload">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span id="heroDownloadLabel">Download the app</span>
+          </a>
+          <a class="btn btn-ghost" href="#self-host">Self-host the web app</a>
+        </div>
+        <p class="meta-line">Free and open-source · Windows, macOS &amp; Linux · <a href="https://github.com/GiveProtocolFoundation/Pacioli">View source on GitHub</a></p>
+      </div>
+
+      <div class="reveal" aria-hidden="false">
+        <div class="ledger" role="img" aria-label="Example balanced journal entry recording a Bitcoin donation: Digital Assets debited 4,820 dollars, Contribution Revenue credited 4,820 dollars.">
+          <div class="ledger-head">
+            <span class="t">Journal Entry</span>
+            <span class="d">JE-0042 · crypto donation</span>
+          </div>
+          <table class="je">
+            <thead>
+              <tr><th>Account</th><th>Debit</th><th>Credit</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Digital Assets — BTC</td><td>4,820.00</td><td></td></tr>
+              <tr><td class="indent">Contribution Revenue</td><td></td><td>4,820.00</td></tr>
+              <tr class="total"><td>Totals</td><td>4,820.00</td><td>4,820.00</td></tr>
+            </tbody>
+          </table>
+          <p class="balance-note">Debits = Credits &nbsp;<span class="ok">✓ balanced</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="double-rule" />
+
+  <!-- FEATURES -->
+  <section class="block" id="features">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">What it does</p>
+        <h2>Accounting for crypto and fiat alike</h2>
+        <p>The discipline Luca Pacioli documented in 1494, applied across every major blockchain and your traditional accounts — with the rigor an auditor expects and the privacy your organization needs.</p>
+      </div>
+      <div class="feature-grid reveal">
+        <div class="feature">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16M9 3v18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <h3>True double-entry</h3>
+          <p>A real chart of accounts where debits and credits balance — crypto and fiat side by side, not a spreadsheet of transactions. Cost basis tracking with FIFO, LIFO, HIFO and specific-ID.</p>
+        </div>
+        <div class="feature">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18" stroke="currentColor" stroke-width="1.6"/></svg>
+          <h3>Every major chain</h3>
+          <p>Bitcoin, Ethereum and every ERC-20 chain, Solana, XRP, Stellar, Polkadot and Cosmos — one ledger, read-only wallet connections, and no private keys ever stored.</p>
+        </div>
+        <div class="feature">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          <h3>Local-first &amp; private</h3>
+          <p>Your data sits in an encrypted SQLite database on your own device. No accounts to create, no servers reading your finances. Cloud sync is optional, never required.</p>
+        </div>
+        <div class="feature">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 3h9l5 5v13H6V3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 3v6h6M9 13h6M9 17h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <h3>Reports that hold up</h3>
+          <p>Profit &amp; loss, balance sheet and cash flow with GAAP/IFRS-minded classification across currencies — plus restricted-fund tracking for nonprofits and exports built for tax season and audit review.</p>
+        </div>
+        <div class="feature">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="2.5" stroke="currentColor" stroke-width="1.6"/><path d="M6 9.5v5M18 9.5v5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <h3>Crypto and fiat, together</h3>
+          <p>Book bank transfers, invoices and cash alongside on-chain activity, in any currency — so your statements reflect everything the organization actually holds.</p>
+        </div>
+        <div class="feature">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M4 9h16M9 4v16" stroke="currentColor" stroke-width="1.6"/></svg>
+          <h3>Yours to inspect</h3>
+          <p>Released under AGPL-3.0. Read every line, run it yourself, and fork it if you need to. Built in the open by the Give Protocol Foundation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="double-rule" />
+
+  <!-- DOWNLOAD -->
+  <section class="block" id="download">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">Desktop app</p>
+        <h2>Download Pacioli</h2>
+        <p>The full desktop experience — local SQLite storage, native wallet dialogs, and offline-first by default. Cross-platform, built with Tauri.</p>
+      </div>
+
+      <div class="dl-note reveal" id="dlStatusNote">
+        <strong>Pacioli is in active development (v0.1).</strong> Signed installers are on the way. Until they ship you can build from source today — the steps mirror the self-host guide below.
+      </div>
+
+      <div class="dl-grid reveal">
+        <div class="dl-card" data-os="mac">
+          <svg class="os-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.5 12.5c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.8-3.5.8s-1.8-.8-3-.8c-1.5 0-2.9.9-3.7 2.3-1.6 2.7-.4 6.8 1.1 9 .7 1.1 1.6 2.3 2.8 2.3 1.1 0 1.5-.7 2.9-.7s1.7.7 2.9.7 2-1.1 2.7-2.1c.9-1.3 1.2-2.5 1.2-2.6-.1 0-2.4-.9-2.4-3.5zM14.3 5.4c.6-.8 1-1.8.9-2.9-.9 0-2 .6-2.6 1.3-.6.7-1.1 1.7-.9 2.7 1 .1 2-.4 2.6-1.1z"/></svg>
+          <h3>macOS</h3>
+          <p class="sub" data-version>Apple silicon &amp; Intel</p>
+          <div class="dl-assets" data-assets>
+            <a class="dl-soft" href="https://github.com/GiveProtocolFoundation/Pacioli">Build from source <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+
+        <div class="dl-card" data-os="windows">
+          <svg class="os-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.5l7.5-1v7.2H3V5.5zm0 13l7.5 1v-7.1H3v6.1zM11.5 4.3L21 3v8.7h-9.5V4.3zm0 8.4H21V21l-9.5-1.3v-7z"/></svg>
+          <h3>Windows</h3>
+          <p class="sub" data-version>Windows 10 &amp; 11</p>
+          <div class="dl-assets" data-assets>
+            <a class="dl-soft" href="https://github.com/GiveProtocolFoundation/Pacioli">Build from source <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+
+        <div class="dl-card" data-os="linux">
+          <svg class="os-ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2c-1.7 0-3 1.5-3 3.3 0 1 .1 1.8-.4 2.7-.6 1-1.7 1.9-2.3 3.4-.6 1.4-.4 2.7-.9 3.6-.4.7-1.1 1.2-1.1 1.9 0 .6.6.9 1.3 1.1.9.2 1.6.6 2.3 1.2.5.4 1 .6 1.5.6.4 0 .7-.2.9-.6.5 0 1.1 0 1.7 0s1.2 0 1.7 0c.2.4.5.6.9.6.5 0 1-.2 1.5-.6.7-.6 1.4-1 2.3-1.2.7-.2 1.3-.5 1.3-1.1 0-.7-.7-1.2-1.1-1.9-.5-.9-.3-2.2-.9-3.6-.6-1.5-1.7-2.4-2.3-3.4-.5-.9-.4-1.7-.4-2.7C15 3.5 13.7 2 12 2z"/></svg>
+          <h3>Linux</h3>
+          <p class="sub" data-version>AppImage · .deb · .rpm</p>
+          <div class="dl-assets" data-assets>
+            <a class="dl-soft" href="https://github.com/GiveProtocolFoundation/Pacioli">Build from source <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+
+      <p class="releases-line">All builds and changelogs: <a href="https://github.com/GiveProtocolFoundation/Pacioli/releases">github.com/GiveProtocolFoundation/Pacioli/releases</a></p>
+    </div>
+  </section>
+
+  <hr class="double-rule" />
+
+  <!-- SELF-HOST -->
+  <section class="block" id="self-host">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">Pacioli Cloud · self-hosted</p>
+        <h2>Run Pacioli in the browser, on your own infrastructure</h2>
+        <p>The same React app ships as a static web build. Host it yourself and reach your ledger from any browser — no vendor in the middle.</p>
+      </div>
+
+      <div class="host-grid">
+        <div class="steps reveal">
+          <div class="step">
+            <span class="n" aria-hidden="true"></span>
+            <div>
+              <h3>Clone the repository</h3>
+              <p>You'll need Node 18+ and pnpm installed.</p>
+              <pre class="cmd"><button class="copy" aria-label="Copy command"><svg viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M5 15V5a2 2 0 012-2h10" stroke="currentColor" stroke-width="1.7"/></svg></button><span class="tok">git</span> clone https://github.com/GiveProtocolFoundation/Pacioli.git
+<span class="tok">cd</span> Pacioli</pre>
+            </div>
+          </div>
+
+          <div class="step">
+            <span class="n" aria-hidden="true"></span>
+            <div>
+              <h3>Install &amp; build the web bundle</h3>
+              <p>This produces a static <span style="font-family:var(--mono);font-size:13px;color:var(--gold-bright)">dist/</span> folder — plain HTML, CSS and JS.</p>
+              <pre class="cmd"><button class="copy" aria-label="Copy command"><svg viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M5 15V5a2 2 0 012-2h10" stroke="currentColor" stroke-width="1.7"/></svg></button><span class="tok">pnpm</span> install
+<span class="tok">pnpm</span> build:web</pre>
+            </div>
+          </div>
+
+          <div class="step">
+            <span class="n" aria-hidden="true"></span>
+            <div>
+              <h3>Deploy the static bundle</h3>
+              <p>Push <span style="font-family:var(--mono);font-size:13px;color:var(--gold-bright)">dist/</span> to any static host. Cloudflare Pages takes one command via Wrangler.</p>
+              <pre class="cmd"><button class="copy" aria-label="Copy command"><svg viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M5 15V5a2 2 0 012-2h10" stroke="currentColor" stroke-width="1.7"/></svg></button><span class="c"># Cloudflare Pages</span>
+<span class="tok">npx</span> wrangler pages deploy dist
+
+<span class="c"># …or serve it with anything else</span>
+<span class="tok">npx</span> serve dist</pre>
+            </div>
+          </div>
+        </div>
+
+        <aside class="host-aside reveal">
+          <h3>Where it runs</h3>
+          <ul class="deploy-targets">
+            <li class="dt"><span class="lbl">Cloudflare Pages</span><span class="desc">Recommended. Free tier, global CDN, custom domain.</span></li>
+            <li class="dt"><span class="lbl">Netlify / Vercel</span><span class="desc">Drag-and-drop <code style="font-family:var(--mono);font-size:12.5px">dist/</code> or connect the repo.</span></li>
+            <li class="dt"><span class="lbl">Nginx / Caddy</span><span class="desc">Serve the folder from your own VPS.</span></li>
+            <li class="dt"><span class="lbl">Docker</span><span class="desc">Copy <code style="font-family:var(--mono);font-size:12.5px">dist/</code> into an nginx image.</span></li>
+          </ul>
+          <p class="caveat"><strong>Good to know:</strong> the browser build is ideal for evaluation and lightweight access. Some features lean on the desktop backend (local SQLite, native dialogs), so the desktop app stays the most complete option — and managed sync, below, is what ties browser and desktop together.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <hr class="double-rule" />
+
+  <!-- MANAGED CLOUD -->
+  <section class="block" id="cloud">
+    <div class="wrap reveal">
+      <div class="cloud-card">
+        <div>
+          <span class="cloud-tag">Managed Cloud · coming soon</span>
+          <h2>Sync, backup and multi-device — without giving up custody of your data</h2>
+          <p class="lede2">A managed service for teams who'd rather not run their own infrastructure. End-to-end encrypted, so the server never sees your plaintext ledger.</p>
+          <ul class="cloud-feats">
+            <li><svg class="tick" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Real-time sync across desktop, web and mobile</li>
+            <li><svg class="tick" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Client-side encrypted, zero-knowledge backups</li>
+            <li><svg class="tick" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Version history and point-in-time restore</li>
+          </ul>
+        </div>
+        <div>
+          <div class="waitlist" id="waitlist">
+            <input type="email" id="waitlistEmail" placeholder="you@organization.org" aria-label="Email address for the Pacioli Cloud waitlist" />
+            <button class="btn btn-primary" id="waitlistBtn" type="button">Join the waitlist</button>
+          </div>
+          <p class="waitlist-note">We'll only email you when managed Cloud is ready. Offline-first stays the default — this is the optional upgrade path.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <span class="word">Pacioli</span>
+        <p>Professional, open-source accounting for crypto and fiat. A project of the Give Protocol Foundation.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Product</h4>
+        <a href="#download">Download</a>
+        <a href="#self-host">Self-host</a>
+        <a href="#cloud">Managed Cloud</a>
+        <a href="https://docs.pacioli.io">Documentation</a>
+      </div>
+      <div class="foot-col">
+        <h4>Open source</h4>
+        <a href="https://github.com/GiveProtocolFoundation/Pacioli">GitHub</a>
+        <a href="https://github.com/GiveProtocolFoundation/Pacioli/blob/main/LICENSE">License (AGPL-3.0)</a>
+        <a href="https://github.com/GiveProtocolFoundation/Pacioli/blob/main/CONTRIBUTING.md">Contributing</a>
+        <a href="https://github.com/GiveProtocolFoundation/Pacioli/security">Security</a>
+      </div>
+      <div class="foot-col">
+        <h4>Community</h4>
+        <a href="https://github.com/GiveProtocolFoundation/Pacioli/discussions">Discussions</a>
+        <a href="https://community.pacioli.io">Forum</a>
+        <a href="mailto:pacioli@giveprotocol.org">Contact</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p class="heritage">Named for Luca Pacioli, who documented double-entry bookkeeping in 1494.</p>
+      <p>© <span id="year"></span> Give Protocol Foundation · AGPL-3.0</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var REPO = "GiveProtocolFoundation/Pacioli";
+
+  // ---- Year ----
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  // ---- OS detection for hero button ----
+  function detectOS() {
+    var p = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || "";
+    var ua = navigator.userAgent || "";
+    p = p.toLowerCase(); ua = ua.toLowerCase();
+    if (p.indexOf("mac") > -1 || ua.indexOf("mac") > -1) return "mac";
+    if (p.indexOf("win") > -1 || ua.indexOf("win") > -1) return "windows";
+    if (p.indexOf("linux") > -1 || ua.indexOf("linux") > -1) return "linux";
+    return null;
+  }
+  var osName = { mac: "macOS", windows: "Windows", linux: "Linux" };
+  var os = detectOS();
+  if (os) {
+    var lbl = document.getElementById("heroDownloadLabel");
+    if (lbl) lbl.textContent = "Download for " + osName[os];
+  }
+
+  // ---- Match release assets to an OS ----
+  var MATCHERS = {
+    mac:     [/\.dmg$/i, /\.app\.tar\.gz$/i, /darwin/i, /macos/i, /aarch64.*\.app/i],
+    windows: [/\.msi$/i, /\.exe$/i, /setup.*\.exe$/i, /windows/i, /-x64\.msi$/i],
+    linux:   [/\.appimage$/i, /\.deb$/i, /\.rpm$/i, /linux/i, /amd64\.deb$/i]
+  };
+  function assetsFor(os, assets) {
+    var m = MATCHERS[os] || [];
+    return assets.filter(function (a) {
+      return m.some(function (re) { return re.test(a.name); });
+    });
+  }
+  function prettyBytes(n) {
+    if (!n) return "";
+    var mb = n / (1024 * 1024);
+    return mb >= 1 ? mb.toFixed(1) + " MB" : Math.round(n / 1024) + " KB";
+  }
+
+  // ---- Populate download cards from the latest GitHub release ----
+  function renderRelease(rel) {
+    var note = document.getElementById("dlStatusNote");
+    if (note) {
+      note.innerHTML = "<strong>Latest release: " + (rel.tag_name || "") + "</strong> — pick your platform below. " +
+        "Older versions live on the releases page.";
+    }
+    ["mac", "windows", "linux"].forEach(function (os) {
+      var card = document.querySelector('.dl-card[data-os="' + os + '"]');
+      if (!card) return;
+      var box = card.querySelector("[data-assets]");
+      var ver = card.querySelector("[data-version]");
+      var list = assetsFor(os, rel.assets || []);
+      if (ver && rel.tag_name) {
+        ver.textContent = rel.tag_name + (ver.textContent ? " · " + ver.textContent : "");
+      }
+      if (!list.length) return; // keep the build-from-source fallback
+      box.innerHTML = "";
+      list.forEach(function (a) {
+        var link = document.createElement("a");
+        link.className = "dl-link";
+        link.href = a.browser_download_url;
+        link.rel = "noopener";
+        link.innerHTML = "<span>" + a.name.replace(/^Pacioli[._-]?/i, "") + "</span>" +
+          "<span class='arr'>" + prettyBytes(a.size) + " ↓</span>";
+        box.appendChild(link);
+      });
+    });
+    // Promote the detected OS card's first real asset to the hero button.
+    if (os) {
+      var primary = assetsFor(os, rel.assets || [])[0];
+      var heroBtn = document.getElementById("heroDownload");
+      if (primary && heroBtn) heroBtn.setAttribute("href", primary.browser_download_url);
+    }
+  }
+
+  fetch("https://api.github.com/repos/" + REPO + "/releases/latest", { headers: { "Accept": "application/vnd.github+json" } })
+    .then(function (r) { if (!r.ok) throw new Error("no release"); return r.json(); })
+    .then(renderRelease)
+    .catch(function () { /* No release yet — the build-from-source fallback already shows. */ });
+
+  // ---- Copy buttons on command blocks ----
+  document.querySelectorAll("pre.cmd .copy").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var pre = btn.closest("pre.cmd");
+      var text = pre.cloneNode(true);
+      var b = text.querySelector(".copy");
+      if (b) b.remove();
+      var cmd = text.textContent.trim();
+      navigator.clipboard.writeText(cmd).then(function () {
+        var orig = btn.innerHTML;
+        btn.innerHTML = "<svg viewBox='0 0 24 24' fill='none'><path d='M5 12l4 4L19 7' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>";
+        btn.style.color = "var(--gold)";
+        setTimeout(function () { btn.innerHTML = orig; btn.style.color = ""; }, 1400);
+      });
+    });
+  });
+
+  // ---- Waitlist (no backend; opens a pre-filled email) ----
+  var wlBtn = document.getElementById("waitlistBtn");
+  var wlInput = document.getElementById("waitlistEmail");
+  function joinWaitlist() {
+    var email = (wlInput.value || "").trim();
+    var subject = encodeURIComponent("Pacioli Cloud waitlist");
+    var body = encodeURIComponent("Please add me to the Pacioli Cloud waitlist." + (email ? "\n\nEmail: " + email : ""));
+    window.location.href = "mailto:pacioli@giveprotocol.org?subject=" + subject + "&body=" + body;
+  }
+  if (wlBtn) wlBtn.addEventListener("click", joinWaitlist);
+  if (wlInput) wlInput.addEventListener("keydown", function (e) { if (e.key === "Enter") joinWaitlist(); });
+
+  // ---- Scroll reveal ----
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var reveals = document.querySelectorAll(".reveal");
+  if (reduce || !("IntersectionObserver" in window)) {
+    reveals.forEach(function (el) { el.classList.add("in"); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+    reveals.forEach(function (el) { io.observe(el); });
+  }
+})();
+</script>
+</body>
+</html>

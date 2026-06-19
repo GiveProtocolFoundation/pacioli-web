@@ -1,0 +1,10 @@
+# Netlify deploy config for the pacioli.io static marketing site.
+#
+# This repo is plain static hosting — there is no build step. Security headers
+# live in `_headers` and redirects in `_redirects`; both are Netlify-native
+# file formats (Cloudflare Pages later adopted them), so the exact same files
+# work unchanged on either host.
+
+[build]
+  publish = "."
+  command = ""

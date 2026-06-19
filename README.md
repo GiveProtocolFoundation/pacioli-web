@@ -13,9 +13,10 @@ is served as-is with **no build step, bundler, or framework**.
 | `favicon.svg` | Ledger-book glyph favicon (gold stroke, transparent background). |
 | `robots.txt` | Allows all crawlers; points to the sitemap. |
 | `sitemap.xml` | Lists the apex URL. |
-| `_headers` | Cloudflare Pages security headers (CSP, nosniff, frame/permissions policy). |
-| `_redirects` | Redirects `www.pacioli.io` → apex `pacioli.io`. |
-| `.github/workflows/deploy.yml` | Optional auto-deploy on push to `main`. |
+| `_headers` | Security headers (CSP, nosniff, frame/permissions policy). Netlify-native format; Cloudflare Pages reads it too. |
+| `_redirects` | Redirects `www.pacioli.io` → apex `pacioli.io`. Netlify-native format; Cloudflare Pages reads it too. |
+| `netlify.toml` | Netlify deploy config (publish root, no build step). |
+| `.github/workflows/deploy.yml` | Optional auto-deploy to Cloudflare Pages on push to `main`. |
 
 ## Local preview
 
@@ -29,7 +30,19 @@ Then open the printed URL and confirm the page renders, fonts load, and `404.htm
 
 ## Deploy
 
-### (a) Cloudflare dashboard (Git integration)
+The site runs unchanged on either Netlify or Cloudflare Pages — `_headers` and
+`_redirects` are read by both. **The apex `pacioli.io` (and `www`) can only
+point to one host at a time**, so pick one as the production host; the other can
+run in parallel on its platform subdomain (`*.netlify.app` / `*.pages.dev`).
+
+### Netlify (Git integration — recommended where a Netlify account exists)
+
+1. Netlify dashboard: **Add new site → Import an existing project →** pick this repo.
+2. Build settings: **Build command: (empty)**, **Publish directory: `.`** (also pinned in `netlify.toml`).
+3. Deploy, then **Domain management → Add a custom domain** `pacioli.io` (and `www.pacioli.io`).
+4. Point DNS: use Netlify DNS, or an `ALIAS`/`ANAME` (or `A` → Netlify load balancer) on the apex and a `CNAME` for `www`. The `www` → apex 301 is handled by `_redirects` (and Netlify's primary-domain redirect).
+
+### Cloudflare Pages (a) dashboard (Git integration)
 
 1. Push this repo to GitHub.
 2. In the Cloudflare dashboard: **Workers & Pages → Create → Pages → Connect to Git**.

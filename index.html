@@ -337,15 +337,17 @@
   <section class="hero">
     <div class="wrap hero-grid">
       <div class="reveal">
+        <span class="cloud-tag">Coming soon · Pre-launch</span>
         <p class="eyebrow">Open-source · Local-first · AGPL-3.0</p>
         <h1>Five centuries of accounting,<br><span class="accent">for crypto and fiat.</span></h1>
         <p class="lede">Pacioli is a professional, double-entry accounting platform spanning Bitcoin, Ethereum and every ERC-20 chain, Solana, XRP, Stellar, Polkadot and Cosmos — alongside your traditional fiat accounts. Your ledger lives on your machine, not someone else's cloud.</p>
+        <p class="lede" style="font-size:16px;color:var(--muted);margin-top:-18px;">In active development and not yet generally available. You can build from source today — packaged releases are on the way.</p>
         <div class="cta-row">
-          <a class="btn btn-primary" href="#download" id="heroDownload">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span id="heroDownloadLabel">Download the app</span>
+          <a class="btn btn-primary" href="https://github.com/GiveProtocolFoundation/Pacioli" id="heroStar" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3l2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16.9 6.8 19l1-5.8L3.6 9.1l5.8-.8L12 3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            <span>Star on GitHub to follow updates</span>
           </a>
-          <a class="btn btn-ghost" href="#self-host">Self-host the web app</a>
+          <a class="btn btn-ghost" href="#download" id="heroDownload"><span id="heroDownloadLabel">Build from source</span></a>
         </div>
         <p class="meta-line">Free and open-source · Windows, macOS &amp; Linux · <a href="https://github.com/GiveProtocolFoundation/Pacioli">View source on GitHub</a></p>
       </div>
@@ -429,7 +431,7 @@
       </div>
 
       <div class="dl-note reveal" id="dlStatusNote">
-        <strong>Pacioli is in active development (v0.1).</strong> Signed installers are on the way. Until they ship you can build from source today — the steps mirror the self-host guide below.
+        <strong>Pacioli is in active development (v0.1) — pre-launch.</strong> Packaged, signed installers are on the way. Until they ship you can build from source today — the steps mirror the self-host guide below. <a href="https://github.com/GiveProtocolFoundation/Pacioli">Star or watch the repo</a> to be notified when releases land.
       </div>
 
       <div class="dl-grid reveal">
@@ -544,10 +546,13 @@
         </div>
         <div>
           <div class="waitlist" id="waitlist">
-            <input type="email" id="waitlistEmail" placeholder="you@organization.org" aria-label="Email address for the Pacioli Cloud waitlist" />
-            <button class="btn btn-primary" id="waitlistBtn" type="button">Join the waitlist</button>
+            <a class="btn btn-primary" href="https://github.com/GiveProtocolFoundation/Pacioli" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3l2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16.9 6.8 19l1-5.8L3.6 9.1l5.8-.8L12 3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+              Star on GitHub
+            </a>
+            <a class="btn btn-ghost" href="https://github.com/GiveProtocolFoundation/Pacioli/subscription" rel="noopener">Watch for releases</a>
           </div>
-          <p class="waitlist-note">We'll only email you when managed Cloud is ready. Offline-first stays the default — this is the optional upgrade path.</p>
+          <p class="waitlist-note">Managed Cloud is still on the way. Star or watch the repo to hear when it — and packaged releases — land. Offline-first stays the default.</p>
         </div>
       </div>
     </div>
@@ -611,10 +616,8 @@
   }
   var osName = { mac: "macOS", windows: "Windows", linux: "Linux" };
   var os = detectOS();
-  if (os) {
-    var lbl = document.getElementById("heroDownloadLabel");
-    if (lbl) lbl.textContent = "Download for " + osName[os];
-  }
+  // Pre-launch: the hero button stays "Build from source" until a real
+  // packaged release exists; renderRelease() relabels it only then.
 
   // ---- Match release assets to an OS ----
   var MATCHERS = {
@@ -666,7 +669,11 @@
     if (os) {
       var primary = assetsFor(os, rel.assets || [])[0];
       var heroBtn = document.getElementById("heroDownload");
-      if (primary && heroBtn) heroBtn.setAttribute("href", primary.browser_download_url);
+      if (primary && heroBtn) {
+        heroBtn.setAttribute("href", primary.browser_download_url);
+        var lbl = document.getElementById("heroDownloadLabel");
+        if (lbl) lbl.textContent = "Download for " + osName[os];
+      }
     }
   }
 
@@ -691,18 +698,6 @@
       });
     });
   });
-
-  // ---- Waitlist (no backend; opens a pre-filled email) ----
-  var wlBtn = document.getElementById("waitlistBtn");
-  var wlInput = document.getElementById("waitlistEmail");
-  function joinWaitlist() {
-    var email = (wlInput.value || "").trim();
-    var subject = encodeURIComponent("Pacioli Cloud waitlist");
-    var body = encodeURIComponent("Please add me to the Pacioli Cloud waitlist." + (email ? "\n\nEmail: " + email : ""));
-    window.location.href = "mailto:pacioli@giveprotocol.org?subject=" + subject + "&body=" + body;
-  }
-  if (wlBtn) wlBtn.addEventListener("click", joinWaitlist);
-  if (wlInput) wlInput.addEventListener("keydown", function (e) { if (e.key === "Enter") joinWaitlist(); });
 
   // ---- Scroll reveal ----
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

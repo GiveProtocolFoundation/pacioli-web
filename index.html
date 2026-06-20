@@ -9,33 +9,33 @@
 <meta property="og:description" content="Open-source, local-first double-entry accounting across every major chain and your fiat accounts." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://pacioli.io" />
-<meta name="theme-color" content="#17110F" />
+<meta name="theme-color" content="#0C141B" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 
 <style>
   :root {
-    --ink:        #17110F;
-    --ink-2:      #1E1613;
-    --ink-3:      #251B17;
-    --burgundy:   #6B2D3E;
-    --burgundy-deep: #4A1E2A;
-    --burgundy-bright: #9A4257;
-    --gold:       #C9A84C;
-    --gold-bright:#E3C66C;
-    --gold-dim:   #9A8038;
-    --parchment:  #F2E9DA;
-    --parchment-dim: #CBBDA9;
-    --muted:      #8C7E6E;
-    --rule:       #3A2E27;
-    --rule-soft:  #2C211C;
+    --ink:        #0C141B;
+    --ink-2:      #11202B;
+    --ink-3:      #16242F;
+    --burgundy:   #294050;
+    --burgundy-deep: #1E2F3C;
+    --burgundy-bright: #E8836F;
+    --gold:       #5FE3C0;
+    --gold-bright:#9CF1DC;
+    --gold-dim:   #2E9A82;
+    --parchment:  #EAF3F2;
+    --parchment-dim: #9FB4BE;
+    --muted:      #647D8B;
+    --rule:       rgba(150,180,196,0.12);
+    --rule-soft:  rgba(150,180,196,0.07);
 
-    --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
-    --sans:  'IBM Plex Sans', system-ui, -apple-system, sans-serif;
-    --mono:  'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+    --serif: 'Geist', system-ui, -apple-system, sans-serif;
+    --sans:  'Geist', system-ui, -apple-system, sans-serif;
+    --mono:  'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
     --maxw: 1120px;
     --gutter: clamp(20px, 5vw, 56px);
@@ -81,18 +81,18 @@
   .eyebrow {
     font-family: var(--mono);
     font-size: 12px;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--gold);
     margin: 0 0 18px;
   }
 
-  h1, h2, h3 { font-family: var(--serif); font-weight: 500; letter-spacing: -0.01em; line-height: 1.08; }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 600; letter-spacing: -0.025em; line-height: 1.08; }
 
   /* ---------- Header ---------- */
   header.site {
     position: sticky; top: 0; z-index: 50;
-    background: rgba(23,17,15,0.82);
+    background: rgba(12,20,27,0.82);
     backdrop-filter: saturate(140%) blur(10px);
     border-bottom: 1px solid var(--rule-soft);
   }
@@ -121,7 +121,7 @@
   @media (max-width: 920px) { .hero-grid { grid-template-columns: 1fr; } }
 
   .hero h1 { font-size: clamp(40px, 6.4vw, 68px); margin: 0 0 22px; }
-  .hero h1 .accent { color: var(--gold); font-style: italic; }
+  .hero h1 .accent { color: var(--gold); }
   .lede { font-size: clamp(17px, 2vw, 20px); color: var(--parchment-dim); max-width: 30ch; margin: 0 0 32px; }
   .cta-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
 
@@ -226,7 +226,7 @@
   .step p { margin: 0 0 12px; color: var(--parchment-dim); font-size: 15px; }
 
   pre.cmd {
-    position: relative; background: #120D0B; border: 1px solid var(--rule);
+    position: relative; background: #080E13; border: 1px solid var(--rule);
     border-radius: 8px; padding: 14px 44px 14px 16px; margin: 0;
     font-family: var(--mono); font-size: 13px; line-height: 1.7; color: var(--parchment);
     overflow-x: auto; white-space: pre;
@@ -262,7 +262,7 @@
   /* ---------- Managed cloud ---------- */
   .cloud-card {
     background:
-      radial-gradient(120% 140% at 100% 0%, rgba(107,45,62,0.35), transparent 60%),
+      radial-gradient(120% 140% at 100% 0%, rgba(95,227,192,0.12), transparent 60%),
       var(--ink-2);
     border: 1px solid var(--rule); border-radius: 14px;
     padding: clamp(30px, 5vw, 52px); display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px; align-items: center;
@@ -310,7 +310,7 @@
 <header class="site">
   <div class="wrap nav">
     <a class="brand" href="#top" aria-label="Pacioli home">
-      <svg class="mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+      <svg class="mark" viewBox="0 0 32 32" fill="none" aria-hidden="true" style="filter:drop-shadow(0 0 7px rgba(95,227,192,0.40))">
         <rect x="3.5" y="4.5" width="25" height="23" rx="3" stroke="currentColor" stroke-width="1.6"/>
         <line x1="16" y1="6" x2="16" y2="26" stroke="currentColor" stroke-width="1.4"/>
         <line x1="6" y1="12" x2="13" y2="12" stroke="currentColor" stroke-width="1.4"/>

@@ -16,7 +16,6 @@ is served as-is with **no build step, bundler, or framework**.
 | `_headers` | Security headers (CSP, nosniff, frame/permissions policy). Netlify-native format; Cloudflare Pages reads it too. |
 | `_redirects` | Redirects `www.pacioli.io` → apex `pacioli.io`. Netlify-native format; Cloudflare Pages reads it too. |
 | `netlify.toml` | Netlify deploy config (publish root, no build step). |
-| `.github/workflows/deploy.yml` | Optional auto-deploy to Cloudflare Pages on push to `main`. |
 
 ## Local preview
 
@@ -30,40 +29,26 @@ Then open the printed URL and confirm the page renders, fonts load, and `404.htm
 
 ## Deploy
 
-The site runs unchanged on either Netlify or Cloudflare Pages — `_headers` and
-`_redirects` are read by both. **The apex `pacioli.io` (and `www`) can only
-point to one host at a time**, so pick one as the production host; the other can
-run in parallel on its platform subdomain (`*.netlify.app` / `*.pages.dev`).
+**Production host: Netlify** (project `pacioli-io`). The site is connected via
+Netlify's Git integration, so every push to `main` auto-builds and deploys —
+no GitHub Actions or repository secrets required. Because the repo is plain
+static files (`_headers`/`_redirects` are Netlify-native), there is no build step.
 
-### Netlify (Git integration — recommended where a Netlify account exists)
+### Netlify (Git integration)
 
 1. Netlify dashboard: **Add new site → Import an existing project →** pick this repo.
 2. Build settings: **Build command: (empty)**, **Publish directory: `.`** (also pinned in `netlify.toml`).
 3. Deploy, then **Domain management → Add a custom domain** `pacioli.io` (and `www.pacioli.io`).
 4. Point DNS: use Netlify DNS, or an `ALIAS`/`ANAME` (or `A` → Netlify load balancer) on the apex and a `CNAME` for `www`. The `www` → apex 301 is handled by `_redirects` (and Netlify's primary-domain redirect).
 
-### Cloudflare Pages (a) dashboard (Git integration)
+### Cloudflare Pages (optional alternative / mirror)
 
-1. Push this repo to GitHub.
-2. In the Cloudflare dashboard: **Workers & Pages → Create → Pages → Connect to Git**.
-3. Select this repository.
-4. Build settings: **Framework preset: None**, **Build command: (empty)**,
-   **Build output directory: `/`**.
-5. Save and deploy. Add the custom domain `pacioli.io` (and `www.pacioli.io`) under the project's **Custom domains** tab.
+The same files also run on Cloudflare Pages. **The apex `pacioli.io` (and `www`)
+can only point to one host at a time**, so CF can only be a mirror on its
+`*.pages.dev` subdomain while Netlify owns the apex.
 
-### (b) Wrangler CLI
-
-```sh
-npx wrangler pages deploy . --project-name=pacioli-web
-```
-
-### (c) GitHub Actions (optional)
-
-`.github/workflows/deploy.yml` auto-deploys on push to `main`. It requires two
-repository secrets:
-
-- `CLOUDFLARE_API_TOKEN` — a token with the **Cloudflare Pages: Edit** permission.
-- `CLOUDFLARE_ACCOUNT_ID` — your Cloudflare account ID.
+- Dashboard: **Workers & Pages → Create → Pages → Connect to Git**, framework preset **None**, build command empty, output directory `/`.
+- Or CLI: `npx wrangler pages deploy . --project-name=pacioli-web`.
 
 ## Notes
 

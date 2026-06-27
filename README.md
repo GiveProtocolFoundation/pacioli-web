@@ -58,30 +58,17 @@ npx serve .
 
 Then open the printed URL and confirm the page renders, fonts load, and `404.html` resolves.
 
-### Deploy
+### Deployment
 
-**Production host: Netlify** (project `pacioli-io`). Connected via Netlify's Git integration, so every push to `main` auto-builds and deploys — no GitHub Actions or repository secrets required. Because the repo is plain static files (`_headers` and `_redirects` are Netlify-native), there is no build step.
-
-**Netlify setup:**
-
-1. Netlify dashboard: **Add new site → Import an existing project →** pick this repo.
-2. Build settings: **Build command: (empty)**, **Publish directory: `.`** (also pinned in `netlify.toml`).
-3. Deploy, then **Domain management → Add a custom domain** `pacioli.io` (and `www.pacioli.io`).
-4. Point DNS: use Netlify DNS, or an `ALIAS`/`ANAME` (or `A` → Netlify load balancer) on the apex and a `CNAME` for `www`. The `www` → apex 301 is handled by `_redirects` (and Netlify's primary-domain redirect).
-
-**Cloudflare Pages (optional mirror):** the same files run on CF Pages on its `*.pages.dev` subdomain. The apex `pacioli.io` can only point to one host at a time, so Netlify owns the apex while CF can mirror.
-
-```sh
-npx wrangler pages deploy . --project-name=pacioli-web
-```
+Hosted on Netlify; every push to `main` auto-deploys. No build step.
 
 ### Notes
 
-- The `_headers` Content-Security-Policy is tuned to the page's needs: inline styles/script, Google Fonts (`fonts.googleapis.com` / `fonts.gstatic.com`), and the GitHub API (`api.github.com`). Adjust it if `index.html`'s external dependencies change.
+- The `_headers` Content-Security-Policy is tuned to the page's needs (inline styles/script, Google Fonts, the GitHub API). Adjust it if `index.html`'s external dependencies change.
 - The brand mark (`pacioli-logo.svg`) is kept in sync with the application repo by manual copy. If the app updates the logo, re-copy from [`Pacioli/src/assets/pacioli_logo_black.svg`](https://github.com/GiveProtocolFoundation/Pacioli/blob/main/src/assets/pacioli_logo_black.svg).
 
 ---
 
 ## License
 
-Pacioli is released under the **GNU AGPL-3.0**. See the [main repository's LICENSE](https://github.com/GiveProtocolFoundation/Pacioli/blob/main/LICENSE) for the full text.
+[GNU AGPL-3.0](./LICENSE), matching the Pacioli application.
